@@ -46,6 +46,12 @@ form.addEventListener("submit", (e)=>{
         adelanteAtras.innerHTML += '<button id="siguiente">Siguiente</button>'
         let siguiente = document.getElementById("siguiente")
         let cantSiguiente = 0;
+        siguiente.addEventListener("click", (e)=>{
+            cantSiguiente++
+            pagina+=25
+            borrarGifs()
+            TraerGifs(buscaEspecifica)
+        })
     }else{
         borrarGifs()
         TraerGifs(buscaEspecifica)
