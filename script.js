@@ -1,14 +1,19 @@
 const API_KEY = "lINyYSZhsXT1fMqGZJD27e7bEzSaArBt";
 
+let numFavorito = 0;
+let favoritos = ""
+let listafavorito = new Set();
 const form = document.getElementById('form');
 
 let adelanteAtras = document.getElementById("AdelanteAtras");
-
+let botonFavoritos = document.getElementById("botonFavoritos")
 let busquedas = 0;
 
 let pagina = 0;
 
 let cantSiguiente = 0;
+
+let circle = '<div class="favorito"></div>'
 
 let buscaEspecifica = ""
 
@@ -27,10 +32,20 @@ function TraerGifs(buscaEspecifica){
         contenedorGif = document.querySelector("#listaGif")
 
         for(let gif of dataGif){
-            contenedorGif.innerHTML += `<div><img src="${gif.images.original.url}" class="gif" alt="${gif.title}"></div>`
+            contenedorGif.innerHTML += `<div><img src="${gif.images.original.url}" class="gif" alt="${gif.title}">${circle}</div>`
         }
-    
-
+        
+        favoritos = document.querySelectorAll('.favorito')
+        
+            console.log(favoritos)
+            for(let favorito of favoritos){
+                favorito.addEventListener("click", (e)=>{
+                    listafavorito.add(favorito.previousSibling.src)
+                    if(listafavorito.size>=1){
+                        botonFavoritos.style.visibility = "visible"
+                    }
+                })
+            }
     })
     .catch(()=>{
         alert("error")
@@ -42,8 +57,6 @@ function borrarGifs(){
         contenedorGif.removeChild(contenedorGif.firstChild)
     }
 }
-
-
 
 form.addEventListener("submit", (e)=>{
     e.preventDefault()
@@ -84,5 +97,20 @@ atras.addEventListener("click", (e)=>{
      }
 })
 
-        
 
+
+botonFavoritos.addEventListener("click", (e)=>{
+    borrarGifs()
+    gifsFavoritos()
+})
+
+
+
+
+function gifsFavoritos(lista){
+    lista = listafavorito
+    let contenedor = document.getElementById("listaGif")
+    for(let gif of lista){
+        contenedor.innerHTML += `<img src=${gif} class="gif">`
+    }
+}
