@@ -8,8 +8,15 @@ let busquedas = 0;
 
 let pagina = 0;
 
+let cantSiguiente = 0;
+
+let buscaEspecifica = ""
+
+let atras = document.getElementById("atras")
+let siguiente = document.getElementById("siguiente")
+
 function TraerGifs(buscaEspecifica){
-    fetch(`https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${buscaEspecifica}&limit=25&offset=${pagina}&rating=g&lang=en`)
+    fetch(`https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${buscaEspecifica}&limit=24&offset=${pagina}&rating=g&lang=en`)
     .then((respuesta)=>{
         return respuesta.json();
     })
@@ -37,24 +44,45 @@ function borrarGifs(){
 }
 
 
+
 form.addEventListener("submit", (e)=>{
     e.preventDefault()
-    let buscaEspecifica = document.getElementById("buscaEspecifica").value
+    buscaEspecifica = document.getElementById("buscaEspecifica").value
     busquedas++
     if(busquedas === 1){
         TraerGifs(buscaEspecifica)
-        adelanteAtras.innerHTML += '<button id="siguiente">Siguiente</button>'
-        let siguiente = document.getElementById("siguiente")
-        let cantSiguiente = 0;
-        siguiente.addEventListener("click", (e)=>{
-            cantSiguiente++
-            pagina+=25
-            borrarGifs()
-            TraerGifs(buscaEspecifica)
-        })
+        siguiente.style.visibility = "visible"
+        
+
     }else{
         borrarGifs()
         TraerGifs(buscaEspecifica)
         busquedas=0
+        atras.style.visibility = "hidden"
     }
 })
+
+
+siguiente.addEventListener("click", (e)=>{
+    pagina+=24
+    borrarGifs()
+    TraerGifs(buscaEspecifica)
+    cantSiguiente++
+    document.getElementById("atras").style.visibility = "visible"
+})
+
+
+atras.addEventListener("click", (e)=>{
+     if(cantSiguiente>=1){
+          pagina-=24
+        borrarGifs()
+           TraerGifs(buscaEspecifica)
+           cantSiguiente--
+           if(cantSiguiente<1){
+               atras.style.visibility = "hidden"
+           }
+     }
+})
+
+        
+

@@ -49,6 +49,14 @@ body{
     margin-bottom: 60px;
 }
 
+#AdelanteAtras{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
 @media(min-width:1200px){
     
 #listaGif{
